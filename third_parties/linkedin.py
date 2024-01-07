@@ -1,6 +1,6 @@
 import os
 import requests
-
+import json
 
 def scrape_linkedin_profile(linkedin_profile_url: str):
     """scrape information from LinkedIn profiles,
@@ -13,7 +13,7 @@ def scrape_linkedin_profile(linkedin_profile_url: str):
     )
 
     data = response.json()
-    data = {
+    data = { 
         k: v
         for k, v in data.items()
         if v not in ([], "", "", None)
@@ -24,3 +24,19 @@ def scrape_linkedin_profile(linkedin_profile_url: str):
             group_dict.pop("profile_pic_url")
 
     return data
+
+def filtered_data():
+    data={}
+    with open('third_parties/mock_profile.json', 'r') as file:
+        data = json.load(file)
+    data={
+        k: v
+        for k,v in data.items()
+        if v not in ([],"","",None)
+            and k not in ["people_also_viewed","certifications"]
+    }
+    if data.get("groups"):
+        for group in data.get("groups"):
+            group.pop("profile_pic_url")
+    return data
+
