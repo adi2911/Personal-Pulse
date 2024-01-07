@@ -1,4 +1,3 @@
-from tools.tools import get_profile_url
 
 from langchain import PromptTemplate
 from langchain.chat_models import ChatOpenAI
@@ -6,6 +5,10 @@ from langchain.chat_models import ChatOpenAI
 from langchain.agents import initialize_agent, Tool
 from langchain.agents import AgentType
 
+import sys
+sys.path.append('/Users/adjohari/Python Projects/Personal-Pulse')  # Replace with the actual path
+
+from tools.tools import get_profile_url
 
 def lookup(name: str) -> str:
     llm = ChatOpenAI(temperature=0, model_name="gpt-3.5-turbo")
@@ -29,3 +32,5 @@ def lookup(name: str) -> str:
     linkedin_username = agent.run(prompt_template.format_prompt(name_of_person=name))
 
     return linkedin_username
+
+print(lookup("Aditi Johari"))

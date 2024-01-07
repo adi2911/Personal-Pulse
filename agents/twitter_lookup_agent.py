@@ -1,3 +1,6 @@
+import sys
+sys.path.append('/Users/adjohari/Python Projects/Personal-Pulse')  # Replace with the actual path
+
 from tools.tools import get_profile_url
 
 from langchain import PromptTemplate
