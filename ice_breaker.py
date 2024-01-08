@@ -11,7 +11,7 @@ from chains.custom_chains import (
 )
 from third_parties.linkedin import filtered_data #scrape_linkedin_profile
 
-# from third_parties.twitter import scrape_user_tweets
+from third_parties.twitter import user_tweets #scrape_user_tweets
 from output_parsers import (
     summary_parser,
     topics_of_interest_parser,
@@ -31,19 +31,18 @@ def ice_break_with(name: str) -> Tuple[Summary, IceBreaker, TopicOfInterest, str
     # tweets = scrape_user_tweets(username=twitter_username)
 
     linkedin_data=filtered_data()
+    tweets = user_tweets()
+
 
     summary_chain = get_summary_chain()
-    # summary_and_facts = summary_chain.run(
-    #     information=linkedin_data, twitter_posts=tweets
-    # )
     summary_and_facts = summary_chain.run(
-        information=linkedin_data
+        information=linkedin_data, twitter_posts=tweets
     )
+    
     summary_and_facts = summary_parser.parse(summary_and_facts)
 
     interests_chain = get_interests_chain()
-    # interests = interests_chain.run(information=linkedin_data, twitter_posts=tweets)
-    interests = interests_chain.run(information=linkedin_data)
+    interests = interests_chain.run(information=linkedin_data, twitter_posts=tweets)
     interests = topics_of_interest_parser.parse(interests)
 
     ice_breaker_chain = get_ice_breaker_chain()

@@ -19,6 +19,8 @@ def get_summary_chain() -> LLMChain:
          2. two interesting facts about them
          \n{format_instructions}
      """
+    
+    
 
     summary_prompt_template = PromptTemplate(
         input_variables=["information", "twitter_posts"],
@@ -27,24 +29,20 @@ def get_summary_chain() -> LLMChain:
             "format_instructions": summary_parser.get_format_instructions()
         },
     )
+    
 
     return LLMChain(llm=llm, prompt=summary_prompt_template)
 
 
 def get_interests_chain() -> LLMChain:
-    # interesting_facts_template = """
-    #      given the information about a person from linkedin {information}, and twitter posts {twitter_posts} I want you to create:
-    #      3 topics that might interest them
-    #     \n{format_instructions}
-    #  """
     interesting_facts_template = """
-         given the information about a person from linkedin {information} I want you to create:
-         1 topic that might interest them
+         given the information about a person from linkedin {information}, and twitter posts {twitter_posts} I want you to create:
+         3 topics that might interest them
         \n{format_instructions}
      """
-
+    
     interesting_facts_prompt_template = PromptTemplate(
-        input_variables=["information"],# input_variables=["information", "twitter_posts"],
+        input_variables=["information", "twitter_posts"],
         template=interesting_facts_template,
         partial_variables={
             "format_instructions": topics_of_interest_parser.get_format_instructions()
@@ -55,19 +53,15 @@ def get_interests_chain() -> LLMChain:
 
 
 def get_ice_breaker_chain() -> LLMChain:
-    # ice_breaker_template = """
-    #      given the information about a person from linkedin {information}, and twitter posts {twitter_posts} I want you to create:
-    #      2 creative Ice breakers with them that are derived from their activity on Linkedin and twitter, preferably on latest tweets
-    #     \n{format_instructions}
-    #  """
     ice_breaker_template = """
-         given the information about a person from linkedin {information} I want you to create:
-         1 creative Ice breakers with them that are derived from their activity on Linkedin.
+         given the information about a person from linkedin {information}, and twitter posts {twitter_posts} I want you to create:
+         2 creative Ice breakers with them that are derived from their activity on Linkedin and twitter, preferably on latest tweets
         \n{format_instructions}
      """
-
+    
     ice_breaker_prompt_template = PromptTemplate(
-        template=ice_breaker_template,# input_variables=["information", "twitter_posts"],
+        template=ice_breaker_template,
+        input_variables=["information", "twitter_posts"],
         partial_variables={
             "format_instructions": ice_breaker_parser.get_format_instructions()
         },
